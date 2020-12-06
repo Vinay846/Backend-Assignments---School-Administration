@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const bodyParser = require("body-parser");
+const fs = require("fs");
 const port = 8080
 app.use(express.urlencoded());
 const studentArray = require('./InitialData')
@@ -17,7 +18,7 @@ app.get('/api/student', (req, res)=>{
 app.get('/api/student/:id', (req, res)=>{
     console.log(req.params.id);
     const idToSend = req.params.id;
-    studentArray.forEach((student)=>{
+    studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToSend)){
             res.send({
                 id: student.id,
@@ -36,12 +37,12 @@ app.post('/api/student', (req, res)=>{
         res.sendStatus(400);
     }
     const currStudent = {
-        id: studentArray.length+1,
+        id: studentArray.studentArray.length+1,
         name: req.body.name,
         currentClass: req.body.currentClass,
         division: req.body.division
     }
-    studentArray.push(currStudent);
+    studentArray.push2Arr(currStudent);
     res.send(currStudent);
 });
 
@@ -51,7 +52,7 @@ app.put('/api/student/:id', (req, res)=>{
     const nameToChange = req.body.name;
     const currentClassToChange = req.body.currentClass;
     const divisionToChange = req.body.division;
-    studentArray.forEach((student)=>{
+    studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToChange)){
             console.log("hai tho");
             nameToChange.length > 0 ? student.name = nameToChange:'';
@@ -64,9 +65,9 @@ app.put('/api/student/:id', (req, res)=>{
 });
 
 app.delete('/api/student/:id', (req, res)=>{
-    studentArray.forEach((student)=>{
+    studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(req.params.id)){
-            studentArray.splice(req.params.id, 1);
+            studentArray.splice2Arr(req.params.id, 1);
             res.sendStatus(200);
         }
     })
