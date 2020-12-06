@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // your code goes here
 app.get('/api/student', (req, res)=>{
-    res.send(studentArray);
+    res.send(studentArray.studentArray);
 });
 
 app.get('/api/student/:id', (req, res)=>{
