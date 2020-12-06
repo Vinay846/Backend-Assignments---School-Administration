@@ -43,7 +43,7 @@ app.post('/api/student', (req, res)=>{
         division: req.body.division
     }
     studentArray.push2Arr(currStudent);
-    res.send(currStudent);
+    res.send(studentArray.studentArray);
 });
 
 app.put('/api/student/:id', (req, res)=>{
