@@ -3,13 +3,80 @@ const app = express()
 const bodyParser = require("body-parser");
 const port = 8080
 app.use(express.urlencoded());
+const studentArray = require('./InitialData')
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // your code goes here
+app.get('/api/student', (req, res)=>{
+    res.send(studentArray);
+});
 
+app.get('/api/student/:id', (req, res)=>{
+    console.log(req.params.id);
+    const idToSend = req.params.id;
+    studentArray.forEach((student)=>{
+        if(student.id === Number(idToSend)){
+            res.send({
+                id: student.id,
+                name: student.name,
+                currentClass: student.currentClass,
+                division: student.division
+            })
+        }
+    });
+    res.sendStatus(404);
+});
+
+app.post('/api/student', (req, res)=>{
+
+    if(req.body.name.length === 0 || req.body.currentClass.length === 0 || req.body.division.length === 0){
+        res.sendStatus(400);
+    }
+    const currStudent = {
+        id: studentArray.length+1,
+        name: req.body.name,
+        currentClass: req.body.currentClass,
+        division: req.body.division
+    }
+    studentArray.push(currStudent);
+    res.send({
+        id: studentArray.length
+    });
+});
+
+app.put('/api/student/:id', (req, res)=>{
+    console.log(req.params.id);
+    const idToChange = req.params.id;
+    const nameToChange = req.body.name;
+    const currentClassToChange = req.body.currentClass;
+    const divisionToChange = req.body.division;
+    studentArray.forEach((student)=>{
+        if(student.id === Number(idToChange)){
+            let dataToUpdate = {
+                id: student.id,
+                name: nameToChange.length > 0 ? nameToChange: student.name,
+                currentClass: currentClassToChange.length > 0 ? currentClassToChange: student.currentClass,
+                division: divisionToChange.length > 0 ? divisionToChange: student.division
+            };
+            studentArray[idToChange] = dataToUpdate;
+            res.send(dataToUpdate);
+        }
+    });
+    res.sendStatus(400);
+});
+
+app.delete('/api/student/:id', (req, res)=>{
+    studentArray.forEach((student)=>{
+        if(student.id === Number(req.params.id)){
+            studentArray.splice(req.params.id, 1);
+            res.send(200);
+        }
+    })
+    res.sendStatus(404);
+})
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
 
