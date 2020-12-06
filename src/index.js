@@ -65,9 +65,9 @@ app.put('/api/student/:id', (req, res)=>{
 });
 
 app.delete('/api/student/:id', (req, res)=>{
-    studentArray.studentArray.forEach((student)=>{
+    studentArray.studentArray.forEach((student, idx)=>{
         if(student.id === Number(req.params.id)){
-            studentArray.splice2Arr(req.params.id, 1);
+            studentArray.splice2Arr(idx, 1);
             res.sendStatus(200);
         }
     })
