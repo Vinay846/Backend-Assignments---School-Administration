@@ -43,7 +43,7 @@ app.post('/api/student', (req, res)=>{
         division: req.body.division
     }
     studentArray.push2Arr(currStudent);
-    res.send(studentArray.studentArray);
+    res.send({id: studentArray.studentArray.length});
 });
 
 app.put('/api/student/:id', (req, res)=>{
@@ -54,7 +54,6 @@ app.put('/api/student/:id', (req, res)=>{
     const divisionToChange = req.body.division;
     studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToChange)){
-            console.log("hai tho");
             nameToChange.length > 0 ? student.name = nameToChange:'';
             currentClassToChange.length > 0 ? student.currentClass = currentClassToChange:'';
             divisionToChange.length > 0 ? student.division = divisionToChange:'';
