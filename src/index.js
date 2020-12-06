@@ -42,9 +42,7 @@ app.post('/api/student', (req, res)=>{
         division: req.body.division
     }
     studentArray.push(currStudent);
-    res.send({
-        id: studentArray.length
-    });
+    res.send(currStudent);
 });
 
 app.put('/api/student/:id', (req, res)=>{
@@ -55,14 +53,11 @@ app.put('/api/student/:id', (req, res)=>{
     const divisionToChange = req.body.division;
     studentArray.forEach((student)=>{
         if(student.id === Number(idToChange)){
-            let dataToUpdate = {
-                id: student.id,
-                name: nameToChange.length > 0 ? nameToChange: student.name,
-                currentClass: currentClassToChange.length > 0 ? currentClassToChange: student.currentClass,
-                division: divisionToChange.length > 0 ? divisionToChange: student.division
-            };
-            studentArray[idToChange] = dataToUpdate;
-            res.send(dataToUpdate);
+            console.log("hai tho");
+            nameToChange.length > 0 ? student.name = nameToChange:'';
+            currentClassToChange.length > 0 ? student.currentClass = currentClassToChange:'';
+            divisionToChange.length > 0 ? student.division = divisionToChange:'';
+            res.sendStatus(200);
         }
     });
     res.sendStatus(400);
@@ -72,7 +67,7 @@ app.delete('/api/student/:id', (req, res)=>{
     studentArray.forEach((student)=>{
         if(student.id === Number(req.params.id)){
             studentArray.splice(req.params.id, 1);
-            res.send(200);
+            res.sendStatus(200);
         }
     })
     res.sendStatus(404);
