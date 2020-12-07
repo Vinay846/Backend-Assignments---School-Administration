@@ -16,19 +16,22 @@ app.get('/api/student', (req, res)=>{
 });
 
 app.get('/api/student/:id', (req, res)=>{
-    console.log(req.params.id);
     const idToSend = req.params.id;
+    let flag = 0;
     studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToSend)){
+            flag = 1;
             res.send({
                 id: student.id,
                 name: student.name,
-                currentClass: student.currentClass,
+                currentClass: parseInt(student.currentClass),
                 division: student.division
             })
         }
     });
-    res.sendStatus(404);
+    if(flag === 0){
+        res.sendStatus(404);
+    }
 });
 
 app.post('/api/student', (req, res)=>{
@@ -54,15 +57,19 @@ app.put('/api/student/:id', (req, res)=>{
     const nameToChange = req.body.name;
     const currentClassToChange = req.body.currentClass;
     const divisionToChange = req.body.division;
+    let flag = 0;
     studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToChange)){
-            nameToChange.length > 0 ? student.name = nameToChange:null;
-            currentClassToChange.length > 0 ? student.currentClass = parseInt(currentClassToChange):null;
-            divisionToChange.length > 0 ? student.division = divisionToChange:null;
+            flag = 1;
+            nameToChange.length > 0 ? student.name = nameToChange:'';
+            currentClassToChange.length > 0 ? student.currentClass = currentClassToChange:'';
+            divisionToChange.length > 0 ? student.division = divisionToChange:'';
             res.sendStatus(200);
         }
     });
-    res.sendStatus(400);
+    if(flag === 0){
+        res.sendStatus(400);
+    }
 });
 
 app.delete('/api/student/:id', (req, res)=>{
