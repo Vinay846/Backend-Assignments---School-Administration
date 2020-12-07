@@ -52,18 +52,20 @@ app.post('/api/student', (req, res)=>{
 });
 
 app.put('/api/student/:id', (req, res)=>{
-    console.log(req.params.id);
     const idToChange = req.params.id;
-    const nameToChange = req.body.name;
-    const currentClassToChange = req.body.currentClass;
-    const divisionToChange = req.body.division;
     let flag = 0;
     studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToChange)){
             flag = 1;
-            nameToChange.length > 0 ? student.name = nameToChange:'';
-            currentClassToChange.length > 0 ? student.currentClass = currentClassToChange:'';
-            divisionToChange.length > 0 ? student.division = divisionToChange:'';
+            for(key in obj){
+                if(key === 'name'){
+                    student.name = obj[key];
+                }else if (key === 'currentClass'){
+                    student.currentClass = parseInt(obj[key]);
+                }else if(key === 'division'){
+                    student.division = obj[key];
+                }
+            }
             res.sendStatus(200);
         }
     });
