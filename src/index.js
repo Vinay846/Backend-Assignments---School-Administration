@@ -33,17 +33,19 @@ app.get('/api/student/:id', (req, res)=>{
 
 app.post('/api/student', (req, res)=>{
 
-    if(req.body.name.length === 0 || req.body.currentClass.length === 0 || req.body.division.length === 0){
+    if(Object.keys(req.body).length < 3){
         res.sendStatus(400);
+    }else{
+        const currStudent = {
+            id: studentArray.studentArray.length+1,
+            name: req.body.name,
+            currentClass: parseInt(req.body.currentClass),
+            division: req.body.division
+        }
+        studentArray.push2Arr(currStudent);
+        res.set('content-type','application/json');
+        res.send({id: studentArray.studentArray.length});
     }
-    const currStudent = {
-        id: studentArray.studentArray.length+1,
-        name: req.body.name,
-        currentClass: req.body.currentClass,
-        division: req.body.division
-    }
-    studentArray.push2Arr(currStudent);
-    res.send({id: studentArray.studentArray.length});
 });
 
 app.put('/api/student/:id', (req, res)=>{
@@ -54,9 +56,9 @@ app.put('/api/student/:id', (req, res)=>{
     const divisionToChange = req.body.division;
     studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToChange)){
-            nameToChange.length > 0 ? student.name = nameToChange:'';
-            currentClassToChange.length > 0 ? student.currentClass = currentClassToChange:'';
-            divisionToChange.length > 0 ? student.division = divisionToChange:'';
+            nameToChange.length > 0 ? student.name = nameToChange:null;
+            currentClassToChange.length > 0 ? student.currentClass = parseInt(currentClassToChange):null;
+            divisionToChange.length > 0 ? student.division = divisionToChange:null;
             res.sendStatus(200);
         }
     });
