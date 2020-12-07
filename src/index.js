@@ -15,8 +15,9 @@ app.get('/api/student', (req, res)=>{
     res.send(studentArray.studentArray);
 });
 
-app.post('/api/student', (req, res)=>{
-    const idToSend = req.body.id;
+app.get('/api/student/:id', (req, res)=>{
+    console.log(req.params.id);
+    const idToSend = req.params.id;
     studentArray.studentArray.forEach((student)=>{
         if(student.id === Number(idToSend)){
             res.send({
